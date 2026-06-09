@@ -57,18 +57,17 @@ export async function POST(request: Request) {
   try {
     await ensureSchema();
     const sql = getSql();
-    const rows = await sql`
+    await sql`
       INSERT INTO leads (nome, email, whatsapp, kick_nick, instagram)
       VALUES (${nome}, ${email}, ${whatsapp}, ${kickNick}, ${instagram})
       ON CONFLICT (lower(email)) DO UPDATE SET
         nome = EXCLUDED.nome,
         whatsapp = EXCLUDED.whatsapp,
         kick_nick = EXCLUDED.kick_nick,
-        instagram = EXCLUDED.instagram
-      RETURNING id;
+        instagram = EXCLUDED.instagram;
     `;
 
-    return NextResponse.json({ ok: true, id: rows[0]?.id }, { status: 201 });
+    return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
     console.error("[hellcoreclub] Failed to save lead:", err);
     return NextResponse.json(

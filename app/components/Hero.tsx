@@ -9,12 +9,12 @@ export default function Hero() {
     >
       {/* Editorial photography — the brand's signature decorative system */}
       <Image
-        src={photoUrl(photos.heroSetup, { w: 2000, q: 65 })}
-        alt={photos.heroSetup.alt}
+        src={photoUrl(photos.heroKickStreamer, { w: 2000, q: 65 })}
+        alt={photos.heroKickStreamer.alt}
         fill
         priority
         sizes="100vw"
-        className="object-cover"
+        className="object-cover object-[55%_center]"
       />
       {/* Ink overlay so the massive display headline stays legible */}
       <div

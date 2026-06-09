@@ -3,8 +3,10 @@
 // Photographer credit is recommended and kept here for reference.
 
 export type Photo = {
-  /** Unsplash "photo-..." base id */
-  id: string;
+  /** Unsplash "photo-..." id (images.unsplash.com) */
+  id?: string;
+  /** Full CDN base URL (e.g. plus.unsplash.com premium assets) */
+  url?: string;
   alt: string;
   credit: string;
   source: string;
@@ -13,6 +15,12 @@ export type Photo = {
 const BASE = "https://images.unsplash.com/";
 
 export const photos = {
+  heroKickStreamer: {
+    url: "https://images.pexels.com/photos/7915492/pexels-photo-7915492.jpeg",
+    alt: "Mulher gamer em setup com três monitores, fones e teclado iluminado",
+    credit: "Pexels",
+    source: "https://www.pexels.com/photo/7915492/",
+  },
   heroSetup: {
     id: "photo-1762919639448-fb39e8d9311e",
     alt: "Streamer jogando com teclado e monitor em iluminação RGB",
@@ -64,7 +72,32 @@ export function unsplashUrl(id: string, { w = 1600, h, q = 70 }: SizeOpts = {}):
   return `${BASE}${id}?${params.toString()}`;
 }
 
-/** Convenience: build the delivery URL straight from a Photo. */
+/** Convenience: build the delivery URL from a Photo (id or direct CDN url). */
 export function photoUrl(photo: Photo, opts?: SizeOpts): string {
+  const w = opts?.w ?? 1600;
+  const q = opts?.q ?? 70;
+
+  if (photo.url) {
+    if (photo.url.includes("pexels.com")) {
+      const params = new URLSearchParams({
+        auto: "compress",
+        cs: "tinysrgb",
+        w: String(w),
+      });
+      return `${photo.url}?${params.toString()}`;
+    }
+
+    const params = new URLSearchParams({
+      auto: "format",
+      fit: "crop",
+      q: String(q),
+      w: String(w),
+    });
+    return `${photo.url}?${params.toString()}`;
+  }
+
+  if (!photo.id) {
+    throw new Error("Photo precisa de id ou url.");
+  }
   return unsplashUrl(photo.id, opts);
 }
