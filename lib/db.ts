@@ -35,8 +35,13 @@ export function ensureSchema(): Promise<void> {
           whatsapp    TEXT NOT NULL,
           kick_nick   TEXT NOT NULL,
           instagram   TEXT NOT NULL,
+          politica_aceita_em TIMESTAMPTZ,
           created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
         );
+      `;
+      await sql`
+        ALTER TABLE leads
+        ADD COLUMN IF NOT EXISTS politica_aceita_em TIMESTAMPTZ;
       `;
       await sql`
         CREATE UNIQUE INDEX IF NOT EXISTS leads_email_unique

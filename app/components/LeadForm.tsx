@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 type Fields = {
@@ -43,7 +44,8 @@ function maskPhone(value: string): string {
 
 export default function LeadForm() {
   const [values, setValues] = useState<Fields>(EMPTY);
-  const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
+  const [aceitouPolitica, setAceitouPolitica] = useState(false);
+  const [errors, setErrors] = useState<Partial<Record<keyof Fields | "politica", string>>>({});
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -58,17 +60,24 @@ export default function LeadForm() {
     setMessage("");
     setErrors({});
 
+    if (!aceitouPolitica) {
+      setErrors({ politica: "Você precisa aceitar as políticas de privacidade." });
+      setStatus("idle");
+      return;
+    }
+
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, aceitouPolitica: true }),
       });
       const data = await res.json();
 
       if (res.ok) {
         setStatus("success");
         setValues(EMPTY);
+        setAceitouPolitica(false);
         return;
       }
 
@@ -83,7 +92,11 @@ export default function LeadForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-[6px] bg-ink p-10 text-center text-on-dark">
+      <div
+        className="rounded-card bg-ink p-10 text-center text-on-dark"
+        role="status"
+        aria-live="polite"
+      >
         <span className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             <path d="M20 7 9 18l-5-5" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -123,15 +136,55 @@ export default function LeadForm() {
             onChange={(e) => update(f.name, e.target.value)}
             className="text-input"
             aria-invalid={Boolean(errors[f.name])}
+            aria-describedby={errors[f.name] ? `${f.name}-error` : undefined}
           />
           {errors[f.name] && (
-            <span className="text-[14px] text-primary">{errors[f.name]}</span>
+            <span id={`${f.name}-error`} className="text-[14px] text-primary" role="alert">
+              {errors[f.name]}
+            </span>
           )}
         </div>
       ))}
 
+      <div className="grid gap-2">
+        <label className="flex cursor-pointer items-start gap-3 text-[15px] leading-6 text-ink">
+          <input
+            id="politica"
+            name="politica"
+            type="checkbox"
+            checked={aceitouPolitica}
+            onChange={(e) => {
+              setAceitouPolitica(e.target.checked);
+              setErrors((prev) => ({ ...prev, politica: undefined }));
+            }}
+            className="checkbox-input mt-0.5 shrink-0"
+            aria-invalid={Boolean(errors.politica)}
+            aria-describedby={errors.politica ? "politica-error" : undefined}
+          />
+          <span>
+            Li e aceito as{" "}
+            <Link
+              href="/politicas-de-privacidade"
+              className="font-semibold text-primary underline underline-offset-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              políticas de privacidade
+            </Link>
+            .
+          </span>
+        </label>
+        {errors.politica && (
+          <span id="politica-error" className="text-[14px] text-primary" role="alert">
+            {errors.politica}
+          </span>
+        )}
+      </div>
+
       {status === "error" && message && (
-        <p className="text-[14px] font-bold text-primary">{message}</p>
+        <p className="text-[14px] font-bold text-primary" role="alert">
+          {message}
+        </p>
       )}
 
       <button

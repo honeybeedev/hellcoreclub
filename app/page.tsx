@@ -12,7 +12,7 @@ function About() {
         <div className="grid items-start gap-10 md:grid-cols-[auto_1fr] md:gap-16">
           <span
             aria-hidden
-            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[6px] bg-primary"
+            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-card bg-primary"
           >
             <svg
               width="42"
@@ -31,8 +31,7 @@ function About() {
             </svg>
           </span>
           <div>
-            <p className="eyebrow mb-4 text-[16px] text-primary">Quem somos</p>
-            <h2 className="display-300 text-[clamp(28px,4.4vw,48px)] leading-tight text-ink">
+            <h2 className="display-300 text-[clamp(1.75rem,4.4vw,3rem)] leading-tight text-ink">
               A HellCore Club nasce para unir os streamers do Brasil em torno de
               um crescimento{" "}
               <span className="font-extrabold text-ink">honesto e sustentável</span>.

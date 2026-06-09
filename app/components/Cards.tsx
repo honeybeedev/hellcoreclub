@@ -6,7 +6,7 @@ type Card = {
 
 function Icon({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-[6px] bg-primary text-on-primary">
+    <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-card bg-primary text-on-primary">
       <svg
         width="24"
         height="24"
@@ -36,7 +36,7 @@ const CARDS: Card[] = [
       </Icon>
     ),
     title: "Networking real",
-    body: "Conecte-se com streamers de todos os cantos do Brasil, troque experiências e cresça em comunidade — colaborações, raids e parcerias de verdade.",
+    body: "Conecte-se com streamers de todos os cantos do Brasil, troque experiências e cresça em comunidade: colaborações, raids e parcerias de verdade.",
   },
   {
     // Crescimento orgânico — trending up
@@ -103,8 +103,7 @@ export default function Cards() {
     <section id="vantagens" className="bg-canvas-soft">
       <div className="mx-auto max-w-[1400px] px-6 py-20 md:px-8 md:py-28">
         <div className="mb-14 max-w-3xl">
-          <p className="eyebrow mb-4 text-[16px] text-primary">A plataforma</p>
-          <h2 className="display-300 text-[clamp(32px,5vw,48px)] leading-tight text-ink">
+          <h2 className="display-300 text-[clamp(2rem,5vw,3rem)] leading-tight text-ink">
             Tudo que você precisa para crescer com consistência.
           </h2>
         </div>
@@ -113,7 +112,7 @@ export default function Cards() {
           {CARDS.map((card) => (
             <article
               key={card.title}
-              className="group rounded-[6px] bg-canvas p-6 transition-transform hover:-translate-y-1"
+              className="group rounded-card bg-canvas p-6 motion-safe:transition-transform motion-safe:hover:-translate-y-1"
             >
               {card.icon}
               <h3 className="text-[24px] font-bold leading-7 text-ink">

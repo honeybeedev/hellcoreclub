@@ -10,6 +10,7 @@ type LeadPayload = {
   whatsapp?: unknown;
   kickNick?: unknown;
   instagram?: unknown;
+  aceitouPolitica?: unknown;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,6 +50,9 @@ export async function POST(request: Request) {
     errors.whatsapp = "Informe um WhatsApp válido com DDD.";
   if (kickNick.length < 2) errors.kickNick = "Informe seu nick na Kick.";
   if (instagram.length < 2) errors.instagram = "Informe seu Instagram.";
+  if (body.aceitouPolitica !== true) {
+    errors.politica = "Você precisa aceitar as políticas de privacidade.";
+  }
 
   if (Object.keys(errors).length > 0) {
     return NextResponse.json({ ok: false, errors }, { status: 422 });
@@ -58,13 +62,14 @@ export async function POST(request: Request) {
     await ensureSchema();
     const sql = getSql();
     await sql`
-      INSERT INTO leads (nome, email, whatsapp, kick_nick, instagram)
-      VALUES (${nome}, ${email}, ${whatsapp}, ${kickNick}, ${instagram})
+      INSERT INTO leads (nome, email, whatsapp, kick_nick, instagram, politica_aceita_em)
+      VALUES (${nome}, ${email}, ${whatsapp}, ${kickNick}, ${instagram}, now())
       ON CONFLICT (lower(email)) DO UPDATE SET
         nome = EXCLUDED.nome,
         whatsapp = EXCLUDED.whatsapp,
         kick_nick = EXCLUDED.kick_nick,
-        instagram = EXCLUDED.instagram;
+        instagram = EXCLUDED.instagram,
+        politica_aceita_em = now();
     `;
 
     return NextResponse.json({ ok: true }, { status: 201 });

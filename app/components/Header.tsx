@@ -4,10 +4,10 @@ import { useState } from "react";
 import Logo from "./Logo";
 
 const NAV_LINKS = [
-  { href: "#sobre", label: "Sobre" },
-  { href: "#status", label: "Status" },
-  { href: "#vantagens", label: "Vantagens" },
-  { href: "#cadastro", label: "Cadastro" },
+  { href: "/#sobre", label: "Sobre" },
+  { href: "/#status", label: "Status" },
+  { href: "/#vantagens", label: "Vantagens" },
+  { href: "/#cadastro", label: "Cadastro" },
 ];
 
 export default function Header() {
@@ -16,30 +16,31 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-ink text-on-dark">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-3 md:px-8">
-        <a href="#topo" className="shrink-0" aria-label="HellCore Club — início">
+        <a href="/" className="shrink-0" aria-label="HellCore Club — início">
           <Logo onDark />
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Principal">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-[16px] text-on-dark/80 transition-colors hover:text-on-dark"
+              className="nav-link text-[16px] text-on-dark/85 hover:text-on-dark"
             >
               {link.label}
             </a>
           ))}
-          <a href="#cadastro" className="btn-pill btn-primary !py-2.5 !px-6 text-[16px]">
+          <a href="/#cadastro" className="btn-pill btn-primary py-2.5! px-6! text-[16px]">
             Quero participar
           </a>
         </nav>
 
         <button
           type="button"
-          className="inline-flex flex-col gap-1.5 p-2 md:hidden"
-          aria-label="Abrir menu"
+          className="inline-flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5 rounded-sm p-2 md:hidden"
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
+          aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
         >
           <span
@@ -61,20 +62,20 @@ export default function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-on-dark/15 bg-ink md:hidden">
-          <nav className="mx-auto flex max-w-[1400px] flex-col gap-1 px-6 py-4">
+        <div id="mobile-nav" className="border-t border-on-dark/15 bg-ink md:hidden">
+          <nav className="mx-auto flex max-w-[1400px] flex-col gap-1 px-6 py-4" aria-label="Principal">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="py-2 text-[18px] text-on-dark/90"
+                className="nav-link py-3 text-[18px] text-on-dark/90"
                 onClick={() => setOpen(false)}
               >
                 {link.label}
               </a>
             ))}
             <a
-              href="#cadastro"
+              href="/#cadastro"
               className="btn-pill btn-primary mt-3 w-full"
               onClick={() => setOpen(false)}
             >

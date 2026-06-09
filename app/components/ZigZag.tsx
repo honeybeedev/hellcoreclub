@@ -36,7 +36,7 @@ const ROWS: Row[] = [
 
 function Panel({ photo }: { photo: Photo }) {
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[6px] bg-ink">
+    <div className="relative aspect-4/3 w-full overflow-hidden rounded-card bg-ink">
       <Image
         src={photoUrl(photo, { w: 1200, q: 70 })}
         alt={photo.alt}
@@ -56,7 +56,7 @@ function Panel({ photo }: { photo: Photo }) {
       {/* red orb anchor in the corner */}
       <span
         aria-hidden
-        className="absolute bottom-4 left-4 flex h-12 w-12 items-center justify-center rounded-[6px] bg-primary"
+        className="absolute bottom-4 left-4 flex h-12 w-12 items-center justify-center rounded-card bg-primary"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path
@@ -74,8 +74,7 @@ export default function ZigZag() {
     <section id="status" className="bg-canvas">
       <div className="mx-auto max-w-[1400px] px-6 py-20 md:px-8 md:py-28">
         <div className="mb-16 max-w-3xl">
-          <p className="eyebrow mb-4 text-[16px] text-primary">Onde estamos</p>
-          <h2 className="display-300 text-[clamp(32px,5vw,48px)] leading-tight text-ink">
+          <h2 className="display-300 text-[clamp(2rem,5vw,3rem)] leading-tight text-ink">
             Um clube feito por streamers, para streamers.
           </h2>
         </div>
@@ -90,9 +89,7 @@ export default function ZigZag() {
                 <Panel photo={row.photo} />
               </div>
               <div className={i % 2 === 1 ? "md:order-1" : ""}>
-                <p className="eyebrow mb-3 text-[16px] text-primary">
-                  {row.eyebrow}
-                </p>
+                <p className="section-label mb-3">{row.eyebrow}</p>
                 <h3 className="text-[clamp(26px,3.5vw,40px)] font-bold leading-tight text-ink">
                   {row.title}
                 </h3>

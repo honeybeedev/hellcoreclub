@@ -36,15 +36,15 @@ export default function Hero() {
           O clube dos streamers do Brasil
         </p>
 
-        <h1 className="display-hero text-[clamp(56px,11vw,140px)]">
+        <h1 className="display-hero text-[clamp(2.5rem,8vw,6rem)]">
           Cresça no jogo
           <br />
           <span className="text-primary">do jeito certo</span>
         </h1>
 
-        <p className="display-300 mt-8 max-w-2xl text-[clamp(20px,2.4vw,32px)] leading-tight text-on-dark/85">
+        <p className="display-300 mt-8 max-w-[42rem] text-[clamp(1.125rem,2.4vw,1.75rem)] leading-snug text-on-dark/90">
           A HellCore Club conecta streamers de todo o Brasil para alcançarem
-          seus objetivos de forma legal e lícita — sem bots, sem view fake, sem
+          seus objetivos de forma legal e lícita: sem bots, sem view fake e sem
           atalhos que prejudicam o seu canal.
         </p>
 
